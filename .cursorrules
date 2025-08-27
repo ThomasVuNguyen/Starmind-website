@@ -1,0 +1,51 @@
+# Cursor Rules for Starmind Website
+
+## Project Style Guidelines
+
+### 🎨 **Design Philosophy**
+- Keep the design **playful and minimal**
+- Maintain the existing visual aesthetic
+- Use only **existing components** - no new UI libraries or frameworks
+- Preserve the current color scheme and typography
+
+### 🚫 **What NOT to Add**
+- No new CSS frameworks (Bootstrap, Tailwind, etc.)
+- No new JavaScript libraries beyond what's already used
+- No new UI components or widgets
+- No external dependencies or CDN links
+- No complex animations or effects
+
+### ✅ **What to Use**
+- **Existing CSS classes** and styles
+- **Current HTML structure** and elements
+- **Present JavaScript functionality** (carousel, etc.)
+- **Current color palette**: #6b7280, #dc2626, #86efac, #1f2937, #f9fafb, #9ca3af
+- **Existing typography**: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif
+
+### 🎯 **Component Guidelines**
+- **Blog cards**: Use existing card structure and styling
+- **Carousel**: Maintain current navigation and dot system
+- **Typography**: Scale existing font sizes responsively
+- **Layout**: Work within the current container and spacing system
+- **Colors**: Use only the established color variables
+
+### 📱 **Mobile-First Approach**
+- Prioritize mobile responsiveness
+- Use existing responsive breakpoints
+- Maintain touch-friendly interactions
+- Keep the playful feel on all screen sizes
+
+### 🔧 **Code Quality**
+- Write clean, readable CSS
+- Use semantic HTML structure
+- Keep JavaScript simple and functional
+- Maintain consistent naming conventions
+- Comment complex logic
+
+### 🎨 **Style Consistency**
+- Follow the existing border-radius patterns (16px, 20px, 24px)
+- Use consistent spacing (16px, 20px, 24px, 32px, 40px)
+- Maintain the current shadow and transition effects
+- Preserve the gradient backgrounds on card headers
+
+Remember: **Keep it simple, playful, and minimal** while working within the existing design system!

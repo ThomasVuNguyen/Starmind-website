@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Starmind</title>
+    <link rel="icon" type="image/svg+xml" href="assets/starmind.svg">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: #6b7280;
+            padding: 20px 16px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: url('assets/starmind.svg') 18 18, auto;
+        }
+        
+        /* Custom cursor for interactive elements */
+        .blog-card,
+        .carousel-btn,
+        .dot {
+            cursor: url('assets/starmind.svg') 18 18, pointer;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px 24px;
+            width: 100%;
+            max-width: 800px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .strikethrough-text {
+            font-size: clamp(32px, 8vw, 48px);
+            font-weight: 400;
+            color: #dc2626;
+            text-decoration: line-through;
+            margin-bottom: 24px;
+            letter-spacing: -0.5px;
+            text-align: center;
+        }
+        
+        .correct-text {
+            display: inline-block;
+            background: #86efac;
+            color: #000;
+            font-size: clamp(28px, 7vw, 48px);
+            font-weight: 500;
+            padding: 16px 24px;
+            border-radius: 16px;
+            margin-bottom: 32px;
+            letter-spacing: -0.5px;
+            text-align: center;
+            width: 100%;
+        }
+        
+        .instruction-text {
+            font-size: clamp(18px, 4.5vw, 24px);
+            color: #374151;
+            line-height: 1.5;
+            margin-bottom: 32px;
+            font-weight: 400;
+            text-align: center;
+        }
+        
+        .placeholder-bars {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 40px;
+        }
+        
+        .bar {
+            background: #d1d5db;
+            border-radius: 4px;
+        }
+        
+        .bar:nth-child(1) { height: 16px; width: 100%; }
+        .bar:nth-child(2) { height: 16px; width: 85%; }
+        .bar:nth-child(3) { height: 16px; width: 92%; }
+        .bar:nth-child(4) { height: 16px; width: 78%; }
+        
+        .blog-cards {
+            position: relative;
+            margin-top: 40px;
+            overflow: hidden;
+        }
+        
+        .cards-container {
+            display: flex;
+            transition: transform 0.3s ease;
+            gap: 16px;
+        }
+        
+        .blog-card {
+            background: #1f2937;
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            flex: 0 0 100%;
+            min-width: 100%;
+        }
+        
+        .blog-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .card-header {
+            height: 100px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .card-header.purple {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .card-header.orange {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+        
+        .card-header.green {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+        
+        .card-emoji {
+            font-size: 32px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+        }
+        
+        .card-content {
+            padding: 20px 16px;
+        }
+        
+        .blog-card h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #f9fafb;
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+        
+        .blog-card p {
+            font-size: 14px;
+            color: #9ca3af;
+            font-weight: 400;
+            line-height: 1.4;
+            margin: 0;
+        }
+        
+        .carousel-controls {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 24px;
+        }
+        
+        .carousel-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: none;
+            background: #374151;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            touch-action: manipulation;
+        }
+        
+        .carousel-btn:hover {
+            background: #4b5563;
+            transform: scale(1.1);
+        }
+        
+        .carousel-btn:active {
+            transform: scale(0.95);
+        }
+        
+        .carousel-btn:disabled {
+            background: #d1d5db;
+            color: #9ca3af;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .carousel-dots {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #d1d5db;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            touch-action: manipulation;
+        }
+        
+        .dot.active {
+            background: #86efac;
+            transform: scale(1.2);
+        }
+        
+        /* Mobile-first responsive design */
+        @media (min-width: 768px) {
+            body {
+                padding: 40px 20px;
+            }
+            
+            .container {
+                padding: 60px 40px;
+                border-radius: 24px;
+            }
+            
+            .strikethrough-text {
+                margin-bottom: 30px;
+                text-align: left;
+            }
+            
+            .correct-text {
+                padding: 20px 40px;
+                margin-bottom: 40px;
+                width: auto;
+                text-align: left;
+            }
+            
+            .instruction-text {
+                margin-bottom: 40px;
+                text-align: left;
+            }
+            
+            .placeholder-bars {
+                gap: 15px;
+                margin-bottom: 50px;
+            }
+            
+            .bar:nth-child(1) { height: 20px; }
+            .bar:nth-child(2) { height: 20px; }
+            .bar:nth-child(3) { height: 20px; }
+            .bar:nth-child(4) { height: 20px; }
+            
+            .blog-cards {
+                margin-top: 50px;
+            }
+            
+            .cards-container {
+                gap: 20px;
+            }
+            
+            .card-header {
+                height: 120px;
+            }
+            
+            .card-emoji {
+                font-size: 40px;
+            }
+            
+            .card-content {
+                padding: 25px 20px;
+            }
+            
+            .blog-card h3 {
+                font-size: 18px;
+            }
+            
+            .carousel-controls {
+                gap: 10px;
+                margin-top: 20px;
+            }
+            
+            .carousel-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
+            }
+            
+            .carousel-dots {
+                gap: 8px;
+                margin-top: 15px;
+            }
+            
+            .dot {
+                width: 8px;
+                height: 8px;
+            }
+        }
+        
+        /* Touch device optimizations */
+        @media (hover: none) and (pointer: coarse) {
+            .blog-card:hover {
+                transform: none;
+                box-shadow: none;
+            }
+            
+            .carousel-btn:hover {
+                transform: none;
+            }
+            
+            .carousel-btn:active {
+                background: #4b5563;
+                transform: scale(0.95);
+            }
+        }
+        
+        /* Landscape mobile optimization */
+        @media (max-height: 600px) and (orientation: landscape) {
+            body {
+                padding: 16px 12px;
+            }
+            
+            .container {
+                padding: 24px 20px;
+            }
+            
+            .strikethrough-text {
+                margin-bottom: 16px;
+            }
+            
+            .correct-text {
+                margin-bottom: 20px;
+            }
+            
+            .instruction-text {
+                margin-bottom: 20px;
+            }
+            
+            .placeholder-bars {
+                margin-bottom: 24px;
+            }
+            
+            .blog-cards {
+                margin-top: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="strikethrough-text">massive cloud models</div>
+        
+        <div class="correct-text">Project Starmind</div>
+        
+        <div class="instruction-text">
+            Building tiny language models that run efficiently on minimal hardware - bringing AI intelligence to edge devices without sacrificing performance
+        </div>
+        
+        <div class="placeholder-bars">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+        
+        <div class="blog-cards">
+            <div class="cards-container" id="cardsContainer">
+                <div class="blog-card">
+                    <div class="card-header purple">
+                        <div class="card-emoji">🧠</div>
+                    </div>
+                    <div class="card-content">
+                        <h3>Neural Architecture Optimization</h3>
+                        <p>Designing efficient transformer variants for resource-constrained environments</p>
+                    </div>
+                </div>
+                <div class="blog-card">
+                    <div class="card-header orange">
+                        <div class="card-emoji">⚡</div>
+                    </div>
+                    <div class="card-content">
+                        <h3>Hardware Acceleration</h3>
+                        <p>Custom inference engines optimized for edge computing and embedded systems</p>
+                    </div>
+                </div>
+                <div class="blog-card">
+                    <div class="card-header green">
+                        <div class="card-emoji">🔬</div>
+                    </div>
+                    <div class="card-content">
+                        <h3>Model Compression</h3>
+                        <p>Advanced quantization and pruning techniques for maximum efficiency</p>
+                    </div>
+                </div>
+                <div class="blog-card">
+                    <div class="card-header purple">
+                        <div class="card-emoji">🚀</div>
+                    </div>
+                    <div class="card-content">
+                        <h3>Edge Deployment</h3>
+                        <p>Seamless integration frameworks for IoT and mobile device implementation</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="carousel-controls">
+                <button class="carousel-btn" id="prevBtn">‹</button>
+                <button class="carousel-btn" id="nextBtn">›</button>
+            </div>
+            
+            <div class="carousel-dots">
+                <div class="dot active" data-slide="0"></div>
+                <div class="dot" data-slide="1"></div>
+                <div class="dot" data-slide="2"></div>
+                <div class="dot" data-slide="3"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const cardsContainer = document.getElementById('cardsContainer');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const dots = document.querySelectorAll('.dot');
+        const cards = document.querySelectorAll('.blog-card');
+        
+        let currentSlide = 0;
+        const totalSlides = cards.length;
+        
+        function updateCarousel() {
+            const translateX = -currentSlide * 100;
+            cardsContainer.style.transform = `translateX(${translateX}%)`;
+            
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentSlide);
+            });
+            
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === totalSlides - 1;
+        }
+        
+        prevBtn.addEventListener('click', () => {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateCarousel();
+            }
+        });
+        
+        nextBtn.addEventListener('click', () => {
+            if (currentSlide < totalSlides - 1) {
+                currentSlide++;
+                updateCarousel();
+            }
+        });
+        
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                currentSlide = index;
+                updateCarousel();
+            });
+        });
+        
+        updateCarousel();
+    </script>
+</body>
+</html>
