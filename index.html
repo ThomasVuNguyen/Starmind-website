@@ -107,8 +107,9 @@
             overflow: hidden;
             transition: all 0.3s ease;
             cursor: pointer;
-            flex: 0 0 100%;
-            min-width: 100%;
+            flex: 0 0 calc(50% - 8px);
+            min-width: calc(50% - 8px);
+            aspect-ratio: 1;
         }
         
         .blog-card:hover {
@@ -117,11 +118,20 @@
         }
         
         .card-header {
-            height: 100px;
+            height: 200px;
             position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
+            overflow: hidden;
+            border-radius: 16px 16px 0 0;
+        }
+        
+        .card-header img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 16px 16px 0 0;
         }
         
         .card-header.purple {
@@ -142,7 +152,7 @@
         }
         
         .card-content {
-            padding: 20px 16px;
+            padding: 16px 16px;
         }
         
         .blog-card h3 {
@@ -269,7 +279,7 @@
             }
             
             .card-header {
-                height: 120px;
+                height: 240px;
             }
             
             .card-emoji {
@@ -374,40 +384,31 @@
         
         <div class="blog-cards">
             <div class="cards-container" id="cardsContainer">
-                <div class="blog-card">
+                <div class="blog-card" onclick="window.open('https://zinc-waterlily-25c.notion.site/Starmind-Pico-Optimize-transformers-for-RP2040-25bb11a2332a816da27bf49da9e97166', '_blank')">
                     <div class="card-header purple">
-                        <div class="card-emoji">🧠</div>
+                        <img src="https://zinc-waterlily-25c.notion.site/image/attachment%3Af5bf7837-6df4-43d1-b711-5fe14d9e7220%3ASpirited-Away-Hayao-Miyazaki-Studio-Ghibli-movie-still-2001.webp?table=block&id=25bb11a2-332a-816d-a27b-f49da9e97166&spaceId=2d9eb9c8-4be6-4c71-b2c6-85215e2446b4&width=2000&userId=&cache=v2" alt="Starmind Pico">
                     </div>
                     <div class="card-content">
-                        <h3>Neural Architecture Optimization</h3>
-                        <p>Designing efficient transformer variants for resource-constrained environments</p>
+                        <h3>Starmind Pico: Optimize transformers for RP2040</h3>
+                        <p>8-25-25</p>
                     </div>
                 </div>
-                <div class="blog-card">
+                <div class="blog-card" onclick="window.open('https://zinc-waterlily-25c.notion.site/Evaluation-methods-for-Tiny-Language-Models-25bb11a2332a80ccbecbcc3db05bb240?pvs=74', '_blank')">
                     <div class="card-header orange">
-                        <div class="card-emoji">⚡</div>
+                        <img src="https://zinc-waterlily-25c.notion.site/images/page-cover/gradients_10.jpg" alt="Evaluation Methods">
                     </div>
                     <div class="card-content">
-                        <h3>Hardware Acceleration</h3>
-                        <p>Custom inference engines optimized for edge computing and embedded systems</p>
+                        <h3>Evaluation methods for Tiny Language Models</h3>
+                        <p>8-26-25</p>
                     </div>
                 </div>
-                <div class="blog-card">
+                <div class="blog-card" onclick="window.open('https://zinc-waterlily-25c.notion.site/Tiny-DeepSeek-25bb11a2332a803c99f8ef71a2c165d7', '_blank')">
                     <div class="card-header green">
-                        <div class="card-emoji">🔬</div>
+                        <img src="https://zinc-waterlily-25c.notion.site/image/attachment%3A08ef10b2-9c2e-4f4d-9244-bbf7c5e2febe%3Atiny.png?table=block&id=25bb11a2-332a-803c-99f8-ef71a2c165d7&spaceId=2d9eb9c8-4be6-4c71-b2c6-85215e2446b4&width=2000&userId=&cache=v2" alt="Tiny DeepSeek">
                     </div>
                     <div class="card-content">
-                        <h3>Model Compression</h3>
-                        <p>Advanced quantization and pruning techniques for maximum efficiency</p>
-                    </div>
-                </div>
-                <div class="blog-card">
-                    <div class="card-header purple">
-                        <div class="card-emoji">🚀</div>
-                    </div>
-                    <div class="card-content">
-                        <h3>Edge Deployment</h3>
-                        <p>Seamless integration frameworks for IoT and mobile device implementation</p>
+                        <h3>Tiny DeepSeek</h3>
+                        <p>8-27-25</p>
                     </div>
                 </div>
             </div>
@@ -420,8 +421,6 @@
             <div class="carousel-dots">
                 <div class="dot active" data-slide="0"></div>
                 <div class="dot" data-slide="1"></div>
-                <div class="dot" data-slide="2"></div>
-                <div class="dot" data-slide="3"></div>
             </div>
         </div>
     </div>
@@ -437,7 +436,7 @@
         const totalSlides = cards.length;
         
         function updateCarousel() {
-            const translateX = -currentSlide * 100;
+            const translateX = -currentSlide * 50;
             cardsContainer.style.transform = `translateX(${translateX}%)`;
             
             dots.forEach((dot, index) => {
@@ -445,7 +444,7 @@
             });
             
             prevBtn.disabled = currentSlide === 0;
-            nextBtn.disabled = currentSlide === totalSlides - 1;
+            nextBtn.disabled = currentSlide === totalSlides - 2;
         }
         
         prevBtn.addEventListener('click', () => {
