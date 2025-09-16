@@ -3,6 +3,7 @@ title = "Experiment 001: Baseline Model Architecture"
 date = "2024-01-15T10:00:00Z"
 hardware = "Raspberry Pi 4"
 budget = "$150"
+draft = false
 +++
 
 ## Objective
