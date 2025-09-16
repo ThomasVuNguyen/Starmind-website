@@ -1,0 +1,12 @@
+baseURL = 'https://starmind.comfyspace.tech/'
+languageCode = 'en-us'
+title = 'Starmind'
+theme = 'hugo-theme-console'
+
+[params]
+  # Set the animation style -- https://animate.style/
+  animateStyle = "animated zoomIn fast"
+
+  [[params.navlinks]]
+  name = "experiments/"
+  url = "experiments/"

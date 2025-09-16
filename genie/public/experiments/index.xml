@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Experiments on Starmind</title>
+    <link>http://localhost:1313/experiments/</link>
+    <description>Recent content in Experiments on Starmind</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 15 Jan 2024 10:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/experiments/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Experiment 001: Baseline Model Architecture</title>
+      <link>http://localhost:1313/experiments/experiment-001/</link>
+      <pubDate>Mon, 15 Jan 2024 10:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/experiments/experiment-001/</guid>
+      <description>Objective Establish a baseline architecture for our tiny language model that can run efficiently on a Raspberry Pi.&#xA;Approach Started with a small transformer architecture (6 layers, 8 attention heads, 512 hidden dimensions) Trained on a curated dataset of 1GB text data Used knowledge distillation from a larger model Results Model size: 45MB Inference speed: 2.3 tokens/second on Raspberry Pi 4 Perplexity: 12.4 (baseline) Next Steps Optimize attention mechanism for mobile hardware Experiment with different activation functions Test on various Raspberry Pi models Resources Code Repository Model Weights Dataset </description>
+    </item>
+  </channel>
+</rss>
