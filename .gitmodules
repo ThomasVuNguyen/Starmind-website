@@ -1,0 +1,6 @@
+[submodule "genie/hugo-theme-console"]
+	path = genie/hugo-theme-console
+	url = https://github.com/mrmierzejewski/hugo-theme-console.git
+[submodule "genie/themes/hugo-theme-console"]
+	path = genie/themes/hugo-theme-console
+	url = https://github.com/mrmierzejewski/hugo-theme-console.git
