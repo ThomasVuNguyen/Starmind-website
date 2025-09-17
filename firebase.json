@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "./genie/public",
+    "public": "./starmind/public",
     "ignore": [
       "firebase.json",
       "**/.*",

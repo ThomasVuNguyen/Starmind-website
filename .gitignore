@@ -69,3 +69,5 @@ node_modules/
 .dataconnect
 
 genie/public/
+
+starmind/public/
