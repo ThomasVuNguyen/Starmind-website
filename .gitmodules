@@ -4,3 +4,9 @@
 [submodule "genie/themes/hugo-theme-console"]
 	path = genie/themes/hugo-theme-console
 	url = https://github.com/mrmierzejewski/hugo-theme-console.git
+[submodule "starmind/themes/ananke"]
+	path = starmind/themes/ananke
+	url = https://github.com/theNewDynamic/gohugo-theme-ananke.git
+[submodule "starmind/themes/hugo-theme-console"]
+	path = starmind/themes/hugo-theme-console
+	url = https://github.com/mrmierzejewski/hugo-theme-console.git
