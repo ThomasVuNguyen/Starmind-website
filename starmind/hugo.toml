@@ -19,6 +19,10 @@ languageCode = "en-us"
   name = "experiments/"
   url = "experiments/"
   
+  [[params.navlinks]]
+  name = "guides/"
+  url = "guides/"
+
   # [[params.navlinks]]
   # name = "photos/"
   # url = "photos/"
