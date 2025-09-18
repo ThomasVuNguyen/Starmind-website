@@ -13,28 +13,40 @@ Is it possible to train a Language Model to run on the RP2040? Yes. Dumb but fas
 
 I have a TinyPico (RP2040) laying around the office for the last 8 months. During a recent hackathon, I decided to whip it out for a weekend project and thought to myself - I bet I can make a Language Model run on this.
 
-![Hackathon](https://www.linkedin.com/dms/prv/image/v2/D5606AQE0sBfzO8b3qA/messaging-image-720/B56Zjkfb3HHcAk-/0/1756180103907?m=AQJTrE_FkvumhwAAAZlVx8LCP1ZzvaAMtgGboS5gx76ckRzhPCYJeIyZew&ne=1&v=beta&t=s39MDAsq3yEiRbBxRtN2AWr0KPLkZ425XVd8HtywrxQ)
+![Hackathon](/starmind-pico/hackathon.png)
 (pic of the robotics team I helped out)
 
-What I did:
+What I setout to do:
+- Find a Language Model architecture that runs well on RP2040
+- Train a model
+- Run to the model
 
+What I did:
 - Tested different hyper-parameters & parameter count (1-28k) on the Pico itself
 - Trained most optimized models on the TinyStories dataset
-- Project status: Due to memory fragmentation on RP2040, I could not fit more than 256 vocabulary on the SRAM → we move on to test with the raspberry pi zero 2w for more flexibility
+- Finding: Due to memory fragmentation on RP2040, I could not fit more than 256 vocabulary on the SRAM due to memory fragmentation
 
 ![Tiny2040](https://i0.wp.com/www.ryanschulze.net/wp-content/uploads/2023/04/IMG_0500-e1682673672809.jpg?ssl=1)
 
-## Key Takeaways
+## Model Architecture
 
-Based on this comprehensive development log from your Starmind-Pico project, here are the key learnings and insights:
+I analyzed 5 factors of the Language Model Architecture & how that affects model inference speed as well as model quality:
 
-### **Critical Technical Learnings**
+1.Dimension size
+![Tiny2040](/starmind-pico/dim-size.png)
 
-#### **Memory Management is the Primary Constraint**
-- **Memory fragmentation** is more limiting than total memory on RP2040
-- Safe vocabulary limit: **256 tokens maximum** - attempts at 512+ tokens failed
-- Practical parameter limit: **~10K parameters** for reliable operation
-- Memory allocation failures occur even before full model loading with high dimensions
+2.Layer Depth
+![Tiny2040](/starmind-pico/depth.png)
+
+3.Attention Head count
+![Attention Head](/starmind-pico/attn-head.png)
+
+4.FFN Ratio
+![FFN Ratio](/starmind-pico/ffn-ratio.png)
+
+5.Vocab Size
+![Vocab](/starmind-pico/vocab-size.png)
+
 
 #### **Architecture Impact Hierarchy (Most to Least Critical)**
 1. **Dimension Size**: 40-50% speed loss per doubling - the ultimate performance killer
@@ -43,19 +55,8 @@ Based on this comprehensive development log from your Starmind-Pico project, her
 4. **FFN Ratio**: 15-20% speed loss per doubling
 5. **Vocabulary Size**: 8-12% speed loss per doubling (minimal impact)
 
-#### **Revolutionary Ultra-Narrow Architecture Discovery**
-- **1D models achieve 32.0 tok/s** - fastest ever recorded on RP2040
-- **2D models achieve 24.0 tok/s** - beating many larger models
-- **Ultra-narrow dimensions (1d-4d) completely overturn conventional wisdom**
-- Conventional belief: "1D models shouldn't work" → Reality: "1D models are fastest"
 
 ### **Microcontroller-Specific Insights**
-
-#### **RP2040 Optimization Principles**
-- **More attention heads = FASTER performance** (contrary to standard wisdom)
-- **Fat FFN layers (64x-256x ratios) are more efficient** than thin ones
-- **Ultra-narrow dimensions scale consistently** across 1K-10K parameter ranges
-- **Mathematical ratios** (Fibonacci, golden ratio) provide optimal parameter allocation
 
 #### **Memory vs Speed Trade-offs**
 - **Quantization paradox**: Saves memory but *slows down* inference due to de-quantization overhead
@@ -66,9 +67,9 @@ Based on this comprehensive development log from your Starmind-Pico project, her
 ### **Production-Ready Findings**
 
 #### **Practical Deployment Models**
-- **1K models**: 15-32 tok/s - real-time capable for interactive applications
-- **8K models**: 2-3 tok/s - best balance of capability and reliability
-- **10K models**: Near memory limits but can achieve 14.5 tok/s with optimal architecture
+- **1K param models**: 15-32 tok/s - real-time capable for interactive applications
+- **8K param models**: 2-3 tok/s - best balance of capability and reliability
+- **10K param models**: Near memory limits but can achieve 14.5 tok/s with optimal architecture
 
 #### **Architecture Templates for Production**
 
@@ -94,25 +95,12 @@ balanced_production = {
 }
 ```
 
-### **Strategic Design Philosophy**
-
-#### **Constraints-First Approach**
-- **Accept limitations** rather than fight them
-- **Optimize within constraints** rather than expand beyond them
-- **Architecture improvement > vocabulary expansion**
-- **Memory safety > theoretical capability**
-
-#### **Breakthrough Mindset**
+#### **Interesting things**
 - **176 architectural variants tested** - most comprehensive microcontroller transformer study ever
 - **Ultra-narrow dimensions work at all scales** (1K-10K parameters)
 - **Mathematical optimization** provides elegant parameter allocation
 - **Speed scaling defies conventional wisdom** - larger models can be faster with optimal architecture
 
-## Key Takeaway
-
-The most profound learning is that **microcontroller transformer architecture is fundamentally different** from large-scale transformers. Conventional wisdom about "more parameters = slower" and "1D models don't work" is completely wrong for RP2040. The breakthrough discovery of ultra-narrow architectures (1d-2d) achieving 32+ tok/s represents a paradigm shift in how we think about AI on resource-constrained devices.
-
-This research proves that **sophisticated AI inference is not only possible but can be blazingly fast** on $5 microcontrollers, opening unprecedented possibilities for edge AI deployment.
 
 ## Training Models
 
@@ -125,6 +113,12 @@ All initial training took me 12 hours (about $20 total).
 - **Most balanced**: 2-3 tokens/second (8K parameters)
 - **Memory limit**: 256 vocabulary tokens maximum
 - **Architecture variants tested**: 176 different configurations
+
+## Conclusion
+
+Due to memory fragmentation on RP2040, the maximum vocabulary size we can use is 256, which is smaller than even the [TinyStories](https://arxiv.org/abs/2305.07759) models.
+
+After spending $20+ in GPU for model pre-training, the models generate a few coherent words, which is promising. However, I decide to move on from this project.
 
 ## People Seem to Love It on Reddit
 
