@@ -1,0 +1,30 @@
+sponsors:
+
+  - name: "Thinking Machine"
+    url: "https://www.thinkingmachines.ai/"
+    description: "Tinker API"
+    image: "https://lsvp.com/wp-content/uploads/2025/07/ebea000e-fc92-4bdc-a075-dccc350fe54a_902x390.jpg"
+
+  - name: "Prime Intellect"
+    url: "https://www.primeintellect.ai/"
+    description: "Inflection Grant GPU credits"
+    image: "https://pbs.twimg.com/profile_images/1837605403359633411/Stj4eLIH_400x400.jpg"
+
+  - name: "Inflection Grant"
+    url: "https://www.inflectiongrants.com/"
+    description: "Inflection Grant GPU credits"
+    image: "https://merge.club/images/programs/inflection.jpg"
+  
+  - name: "Cloudrift"
+    url: "https://www.cloudrift.ai/"
+    description: "GPU credits and model inference"
+    image: "https://www.cloudrift.ai/logo.png"
+  
+  - name: "AWS Bedrock"
+    url: "https://aws.amazon.com/bedrock/"
+    description: "Model inference & General AWS"
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Amazon_Web_Services_Logo.svg/1024px-Amazon_Web_Services_Logo.svg.png"
+  
+
+
+

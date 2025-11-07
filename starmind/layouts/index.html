@@ -26,4 +26,25 @@
 {{ end }}
 </div>
 
+<br/>
+
+<h1>Sponsors</h1>
+
+<div class="posts-list">
+{{ $sponsors := .Site.Data.sponsors.sponsors }}
+{{ range $sponsors }}
+    <div class="post">
+        <p>
+            {{ if .image }}
+            <a href="{{ .url }}" title="{{ .name }}" target="_blank" rel="noopener">
+                <img src="{{ .image }}" alt="{{ .name }}" style="max-width: 120px; max-height: 60px; margin-bottom: 8px; display: block;" />
+            </a>
+            {{ end }}
+            <h1><a href="{{ .url }}" title="{{ .name }}" target="_blank" rel="noopener">{{ .name }}</a></h1>
+            <div style="color: inherit; font-size: 0.9em; margin-top: 4px;">{{ .description }}</div>
+        </p>
+    </div>
+{{ end }}
+</div>
+
 {{ end }}
