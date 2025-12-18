@@ -1,0 +1,151 @@
+:root {
+    --bg-color: #0a0a0c;
+    --text-color: #e0e0e0;
+    --accent-color: #ffffff;
+    --star-color: #ffd700; /* Gold or just keep it white/accent */
+    --font-main: 'Outfit', sans-serif;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: var(--font-main);
+    overflow-x: hidden;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Intro Container - Centered initially */
+#intro-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    pointer-events: none; /* Let clicks pass through if needed later */
+    transition: all 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+#text-container {
+    font-size: 2.5rem;
+    font-weight: 300;
+    white-space: pre; /* Keep spaces */
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+#star-cursor {
+    position: absolute; /* Relative to viewport or container? */
+    /* We will use JS to position it relative to text */
+    width: 40px;
+    height: 40px;
+    color: var(--accent-color);
+    transition: transform 0.1s linear; /* Smooth typing movement */
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
+}
+
+#star-cursor svg {
+    width: 100%;
+    height: 100%;
+}
+
+/* Header Styles for Final State */
+#main-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+    box-sizing: border-box;
+    opacity: 0; /* Hidden initially */
+    transform: translateY(-20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    z-index: 50;
+}
+
+.logo-area {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+nav a {
+    color: var(--text-color);
+    text-decoration: none;
+    margin-left: 30px;
+    font-size: 1rem;
+    opacity: 0.7;
+    transition: opacity 0.3s;
+}
+
+nav a:hover {
+    opacity: 1;
+}
+
+/* Main Content */
+#main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 1s ease 1s, transform 1s ease 1s; /* Delay to wait for header */
+}
+
+h1 {
+    font-size: 4rem;
+    margin: 0;
+    background: linear-gradient(135deg, #fff 0%, #777 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+p {
+    font-size: 1.2rem;
+    color: #888;
+    margin-top: 1rem;
+}
+
+/* Animation Classes */
+
+/* When the intro finishes, we fade out the centered container or move it */
+body.animation-complete #intro-container {
+    opacity: 0;
+    pointer-events: none;
+}
+
+body.animation-complete #main-header {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+body.animation-complete #main-content {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Special cursor effect during typing */
+.cursor-blink {
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
