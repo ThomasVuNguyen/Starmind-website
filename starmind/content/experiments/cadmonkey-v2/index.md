@@ -1,21 +1,21 @@
 +++
-title = "Train a tiny model to generate 3D files"
-date = "2025-11-05"
-spent = "$500"
+title = "Train a tiny model to generate 3D files (v2) through example diversification"
+date = "2025-12-19"
+spent = "$300"
 +++
 
-![Cadmonkey](/cad-monkey/cadmonkey.png)
-Training a Language Model to make 3D files
+![Cadmonkey](/cadmonkey-v2/thumbnail.png)
+
 <!--more-->
 ---
 
 ## Background
 
-Over my whole career, I have worked as a Mechanical Engineer, Robotics Engineer, Plumbing Engineer, Software & AI Engineer.
+Hi, I'm Thomas, a Mechanical/Robotics Engineer turned Software & ML.
 
-![Engineer](/cad-monkey/engineer.jpg)
+![Engineer](/cadmonkey-v2/engineer.png)
 
-A consistent thread that shows is that: physical things take longer and more effort to create than software.
+This is an experiment to create 3D models using a Small Language Model.
 
 Armed with GPU credits from CloudRift & Prime Intellect + the generous free usage of Huggingface, I set out to build a language model to generate 3d files - CADMonkey.
 
@@ -25,21 +25,28 @@ Armed with GPU credits from CloudRift & Prime Intellect + the generous free usag
 
 ## 1. Model architecture & 3d Programming Language
 
-At Starmind, we need our models to be small enough to run on Raspberry Pi 4 & 5. Therefore, 1B is ideal, but the smaller the better. For this project, we picked Gemma3 due to its high intelligence and diversity of model sizes (270M, 1B, 4B, 12B).
+At Starmind, we need our models to be small enough to run on Raspberry Pi 4 & 5. 
+The base Language Model of choice is Gemma3-1B for the following reasons:
+
+- It's easy to finetune (aka not having to spend 10+ hours debugging code)
+- No chat template (ease of development and use)
+- Tools around training (Unsloth), deployment and quantization (llama.cpp) are matured
 
 ![Gemma3](/cad-monkey/gemma3.png)
 
 We also briefly considered a diffusion model, but the development complexity is too large. Perhaps we will revisit this idea another day.
 
-The model we're training will generate code that's used to render 3D files. We chose OpenSCAD for its open-source nature, ability to be rendered on-device or on-browser, and its token efficiency (using less tokens to represent an object compared to other methods like Blender).
+The model will generate OPENSCAD code that will be used to render 3D models.
 
-![ide](/cad-monkey/ide.png)
+![ide](/cadmonkey-v2/openscad.png)
+
+Why OpenSCAD? As a Mechanical Engineer, I find that traditional Voxel & Mesh-based 3D models to bring little to no value. Engineering requires constant revisions and iterations, and shape-based and code-based models are ideal for that.
 
 ---
 
 ## 2. Dataset generation
 
-If there is one thing you take away from reading this, it should be: a model is only as good as its dataset.
+Your model is only as good as its dataset. But the definiton of "good" is relative to the task at hand.
 
 Here are the attempts we made at creating a dataset:
 
@@ -62,6 +69,34 @@ This is the first synthetically generated & reviewed OpenSCAD dataset of large q
 
 This would not be possible without the grants provided by CloudRift. Thanks a bunch!
 
+After fine-tuning the model on the dataset, we found that:
+- The model generates working OpenSCAD code 80% of the time
+- However, the code does not match the object. 
+
+![v1](/cadmonkey-v2/v1.png)
+
+As the matter of fact, only 1/400 models matched the object. See below for the only good object created - the duck:
+
+![duck](/cadmonkey-v2/duck.png)
+
+#3: Scaling dataset horizontally
+
+We tried scaling up with a dataset with more objects, but the same issue of non-matching objects persisted.
+
+#4: Scaling up dataset vertically
+
+Model performance only truly improved when we scaled up the dataset vertically:
+- Using the same number of objects
+- Scale up the number of examples of each object
+- Scale up the diversity of teacher models used to generate the datasets
+
+You can see the improvement below:
+
+![cat](/cadmonkey-v2/cat.png)
+![dog](/cadmonkey-v2/dog.png)
+![chicken](/cadmonkey-v2/chicken.png)
+![universe](/cadmonkey-v2/universe.png)
+
 ---
 
 ## 3. Mistakes we made along the way
@@ -75,7 +110,7 @@ There are many things we tried that did not work, and we hope it helps you avoid
 
 ## 4. Training
 
-With the dataset ready, we fine-tuned Gemma3 270M, 1B & 4B models on the dataset with the following prompt:
+With the dataset ready, we fine-tuned Gemma3 1B model on the datasets with the following prompt:
 
 'hey cadmonkey, make me a {object name}'
 
@@ -85,44 +120,20 @@ This was done using Unsloth 4-bit finetuning.
 The output model is converted into a GGUF model with q8 quantization.
 
 Everything is available here: https://hf.co/collections/ThomasTheMaker/cadmonkey
----
-
-## 5. Model evaluation
-
-Evaluation is crucial yet tricky. We implemented a similar filtering pipeline to that of the dataset synthetic generation process
-
-Prompt the model -> generate the code -> render the code -> ask Qwen2.5-VL to judge the render
-
-![eval](/cad-monkey/eval.png)
-
-The result is consistently around 75-80% rendering rate (aka does the code render?) & 20-30% VLM judge rate.
-
-This remains quite consistent with all model sizes 270M -> 4B
-
-Interesting findings:
-- We also attempted fine-tuning on coding-specific models like CodeGemma & CodeLLama, but the model failed to generate coherent code. More work needs to be spent to learn why.
 
 ---
 
 ## 6. Make it available to the world!
 
-First, I made a CLI application to run locally on Linux, MacOS & Raspberry Pi. It's still available here:
-https://github.com/ThomasVuNguyen/MakeMe
+I'm using Modal to host the model. Since the model is small, it can run very fine even on CPU, Raspberry Pis, etc.
 
-![cli](/cad-monkey/makeme.png)
+For speed optimization, I'm using T4 GPU on Modal, giving some awesome output speed. Although only 8% of GPU is utilized. 
 
-Check out the full video here: https://www.reddit.com/r/LocalLLaMA/comments/1oavxt8/i_built_a_1b_cad_generator_model/
+On average, each prompt costs 2 cents to run.
 
-Second, I made it into a web application, cadmonkey: https://cadmonkey.web.app
-![ide](/cad-monkey/ide.png)
-
-In the first 12 hours of it launching on Reddit, 380+ models were created. I'm quite proud of that, since everything ran on the 30$ credits in Modal. 1-2 cents were spent every model.
+Try out the app at https://cadmonkey.web.app
 
 ![app](/cad-monkey/app.jpg)
-
-While most 3d models were combinations of random cubes and spheres, a user successfully made a duck (which I'm very proud of):
-
-![duck](/cad-monkey/duck.png)
 
 --- 
 
@@ -140,31 +151,20 @@ You really can just do things. You just have to be crazy enough to start.
 
 --- 
 
-## 7. Some good news
-
-We have onboarded a good friend, Rutvi onto Starmind as a volunteer/weekend contributor! She's a ML intern of a company in the same startup incubator as my startup. She's bright and eager to learn. I hope she stays that way.
-![rutvi](/cad-monkey/rutvi.png)
-
-I received the beta access & a grant from The Thinking Machine! It's about to make my finetuning & evaluating workflow so much more efficient and affordable.
-
-![tinker](/cad-monkey/tinker.png)
-
-More good things will come if we work hard & do the right things consistently
-
-![smile](/cad-monkey/smile.png)
-
---- 
-
 ## Source code, useful links & sponsors
 
 The dataset & model files: 
 - https://hf.co/collections/ThomasTheMaker/cadmonkey
+- https://hf.co/ThomasTheMaker
+
+The datasets used in this experiments are named "Synthetic-Openscad-v**"
 
 Dataset generation & training code: 
 - https://github.com/ThomasVuNguyen/K
-- https://github.com/ThomasVuNguyen/generate-things
+- https://github.com/ThomasVuNguyen/maker-model
 
-Awesome sponsors (:
+Awesome compute sponsors (:
 - https://cloudrift.ai
 - https://primeintellect.ai
-- AWS
+
+If you have any questions, ask me here: https://discord.gg/XT23RZ5U6R
