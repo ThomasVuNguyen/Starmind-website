@@ -47,6 +47,11 @@
                     <meta property="position" content="{{ add $index 1}}" />
                 </li>
                 {{ end }}
+                <li property="itemListElement" typeof="ListItem">
+                    <a property="item" typeof="WebPage" href="https://discord.gg/XT23RZ5U6R">
+                    <span property="name">Discord</span></a>
+                    <meta property="position" content="{{ add (len .Site.Params.navlinks) 1}}" />
+                </li>
             </ul>
           </nav>
         </div>
